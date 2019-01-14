@@ -354,15 +354,17 @@ function! s:updateBrowserBufNrAndLoadSyntax()
 endfunction
 
 
-if !get(g:, 'ri_no_mappings') && !hasmapto("ri#OpenSearchPrompt",'n')
-  nnoremap <silent> <leader>r :call ri#OpenSearchPrompt(0)<cr>
-  nnoremap <silent> <leader>R :call ri#OpenSearchPrompt(1)<cr>
-  nnoremap <silent> <leader>K :call ri#LookupNameUnderCursor()<cr>
+if !get(g:, 'ri_no_mappings')
+  if !hasmapto("ri#OpenSearchPrompt",'n')
+    nnoremap <silent> <leader>r :call ri#OpenSearchPrompt(0)<cr>
+    nnoremap <silent> <leader>R :call ri#OpenSearchPrompt(1)<cr>
+    nnoremap <silent> <leader>K :call ri#LookupNameUnderCursor()<cr>
+  endif
+
+  au FileType ruby		nnoremap <buffer> K :call ri#LookupNameUnderCursor()<cr>
 endif
 
 autocmd BufRead *.rivim call <SID>updateBrowserBufNrAndLoadSyntax()
-
-au FileType ruby		nnoremap <buffer> K :call ri#LookupNameUnderCursor()<cr>
 
 call s:createCacheDir()
 
