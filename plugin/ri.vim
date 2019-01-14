@@ -2,11 +2,24 @@
 " Maintainer:	Daniel Choi <dhchoi@gmail.com>
 " License: MIT License (c) 2012 Daniel Choi
 
+if !exists("g:ri_cache_dir")
+  let g:ri_cache_dir = ""
+endif
+
 let s:plugin_path = expand("<sfile>:p:h")
 let s:ruby_script_path = s:plugin_path . "/ri_vim.rb "
 let s:selectionPrompt = ""
-let s:cacheDir = s:plugin_path."/ri_vim_cache"
 let s:verticalSplit = 0
+
+function! s:getCacheDir()
+  if g:ri_cache_dir != ""
+    return g:ri_cache_dir
+  endif
+
+  return s:plugin_path."/ri_vim_cache"
+endfunc
+
+let s:cacheDir = s:getCacheDir()
 
 func! s:trimString(string)
   let string = substitute(a:string, '\s\+$', '', '')
@@ -354,4 +367,3 @@ au FileType ruby		nnoremap <buffer> K :call ri#LookupNameUnderCursor()<cr>
 call s:createCacheDir()
 
 let g:RIVimLoaded = 1
-
